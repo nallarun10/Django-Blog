@@ -1,17 +1,17 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1>{{ poll.title }}</h1>
-<div class="poll-body">
-    {{ poll.text }}
+<a class="backlink" href="/">Home</a>
+<h1>{{ post }}</h1>
+<p class="byline">
+  Posted by {{ post.author.username }} &mdash; {{ post.published_date }}
+</p>
+<div class="post-body">
+  {{ post.text }}
 </div>
-<div class="poll-score">
-    Current score: {{ poll.score }}
-</div>
-<div class="poll-vote">
-    <form method="POST">
-        {% csrf_token %}
-        <input type="submit" name="vote" value="Yes">
-        <input type="submit" name="vote" value="No">
-    </form>
-</div>
+<ul class="categories">
+  {% for category in post.categories.all %}
+    <li>{{ category }}</li>
+  {% endfor %}
+</ul>
 {% endblock %}

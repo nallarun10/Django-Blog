@@ -1,7 +1,26 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from blogging.models import Post
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
+
+from django.utils import timezone
+from blogging.forms import MyCommentForm
+
+def add_model(request):
+ 
+    if request.method == "POST":
+        form = MyCommentForm(request.POST)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.timestamp = timezone.now()
+            model_instance.save()
+            return redirect('/')
+ 
+    else:
+ 
+        form = MyCommentForm()
+ 
+        return render(request, "blogging/my_template.html", {'form': form})
 
 def stub_view(request, *args, **kwargs):
     body = "Stub View\n\n"

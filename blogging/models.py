@@ -1,5 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from rest_framework import serializers
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('url', 'username', 'email', 'groups')
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('url', 'name')
+
 
 class Post(models.Model):
     title = models.CharField(max_length=128)
@@ -22,3 +35,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+class Comment(models.Model):
+ 
+    title = models.CharField(max_length=100)
+    text = models.CharField(max_length=255)
+    notes = models.CharField(max_length=255)
+ 
+    def __str__(self):
+        return self.title
